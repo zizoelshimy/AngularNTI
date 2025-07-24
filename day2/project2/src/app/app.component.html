@@ -1,0 +1,175 @@
+<div class="container">
+  <h1>{{ title }}</h1>
+  <div class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search by product name or category..."
+      class="search-input">
+    <button (click)="onSearch()" class="search-btn">Search</button>
+    <button (click)="clearSearch()" class="clear-btn">Clear</button>
+  </div>
+
+  <!-- Filter Options -->
+  <div class="filter-container">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select
+      id="categoryFilter"
+      [(ngModel)]="selectedCategory"
+      (change)="onCategoryFilter()">
+      <option value="">All Categories</option>
+      <option *ngFor="let category of categories" [value]="category">
+        {{ category }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Product Form -->
+  <div class="form-container">
+    <h2>Product Registration Form</h2>
+    <form (ngSubmit)="onSubmit()" #productFormRef="ngForm">
+
+      <!-- Product Name -->
+      <div class="form-group">
+        <label for="productName">Product Name: <span class="required">*</span></label>
+        <input
+          type="text"
+          id="productName"
+          [(ngModel)]="productForm.productName"
+          name="productName"
+          required
+          #productName="ngModel">
+        <span class="error-message" *ngIf="formErrors.productName">
+          {{ formErrors.productName }}
+        </span>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="productDescription">Description: <span class="required">*</span></label>
+        <textarea
+          id="productDescription"
+          [(ngModel)]="productForm.description"
+          name="description"
+          rows="3"
+          required
+          #description="ngModel">
+        </textarea>
+        <span class="error-message" *ngIf="formErrors.description">
+          {{ formErrors.description }}
+        </span>
+      </div>
+
+      <!-- Price -->
+      <div class="form-group">
+        <label for="productPrice">Price ($): <span class="required">*</span></label>
+        <input
+          type="number"
+          id="productPrice"
+          [(ngModel)]="productForm.price"
+          name="price"
+          step="0.01"
+          min="0"
+          required
+          #price="ngModel">
+        <span class="error-message" *ngIf="formErrors.price">
+          {{ formErrors.price }}
+        </span>
+      </div>
+
+      <!-- Category -->
+      <div class="form-group">
+        <label for="productCategory">Category: <span class="required">*</span></label>
+        <select
+          id="productCategory"
+          [(ngModel)]="productForm.category"
+          name="category"
+          required
+          #category="ngModel">
+          <option value="">Select Category</option>
+          <option *ngFor="let cat of categories" [value]="cat">
+            {{ cat }}
+          </option>
+        </select>
+        <span class="error-message" *ngIf="formErrors.category">
+          {{ formErrors.category }}
+        </span>
+      </div>
+
+      <!-- Availability -->
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            [(ngModel)]="productForm.availability"
+            name="availability"
+            #availability="ngModel">
+          <span class="checkmark"></span>
+          Product is Available
+        </label>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn">
+        {{ submitButtonText }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Products Table -->
+  <div class="table-container">
+    <h2>Products List</h2>
+
+    <!-- No Products Message -->
+    <div *ngIf="showNoProductsMessage" class="no-products">
+      <span *ngIf="products.length === 0">No products found. Add your first product above!</span>
+      <span *ngIf="products.length > 0 && filteredProducts.length === 0">
+        No products match your search criteria.
+      </span>
+    </div>
+
+    <!-- Products Table -->
+    <table *ngIf="!showNoProductsMessage" class="products-table">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Availability</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of filteredProducts; trackBy: trackByProductId"
+            [class]="getRowClass(product.category)">
+          <td>{{ product.productName }}</td>
+          <td class="description" [title]="product.description">
+            {{ product.description }}
+          </td>
+          <td class="price">${{ product.price | number:'1.2-2' }}</td>
+          <td>
+            <span class="category" [class]="getCategoryClass(product.category)">
+              {{ product.category }}
+            </span>
+          </td>
+          <td [class]="getAvailabilityClass(product.availability)">
+            {{ getAvailabilityText(product.availability) }}
+          </td>
+          <td class="action-buttons">
+            <button
+              class="update-btn"
+              (click)="editProduct(product)">
+              Edit
+            </button>
+            <button
+              class="delete-btn"
+              (click)="deleteProduct(product)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

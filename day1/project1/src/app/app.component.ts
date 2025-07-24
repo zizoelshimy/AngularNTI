@@ -4,11 +4,12 @@ import { AboutComponent } from './about/about.component';
 import { DescriptionComponent } from './description/description.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SliderComponent } from './slider/slider.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NavbarComponent,HomeComponent,DescriptionComponent,AboutComponent],
+  imports: [NavbarComponent,HomeComponent,DescriptionComponent,AboutComponent,SliderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
