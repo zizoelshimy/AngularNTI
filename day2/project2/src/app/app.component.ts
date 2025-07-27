@@ -28,10 +28,10 @@ export class AppComponent {
     price: '',
     category: ''
   };
-  // Search and filter properties
+  // Search and filter
   searchTerm: string = '';
   selectedCategory: string = '';
-  // Categories array for dropdown
+  // Categories array
   categories: string[] = [
     'Electronics',
     'Clothing',
@@ -213,7 +213,6 @@ export class AppComponent {
     this.showNoProductsMessage = this.filteredProducts.length === 0;
   }
 
-  // Get row SCSS class based on category
   getRowClass(category: string): string {
     switch (category) {
       case 'Electronics': return 'electronics-row';
@@ -224,8 +223,6 @@ export class AppComponent {
       default: return '';
     }
   }
-
-  // Get category SCSS class
   getCategoryClass(category: string): string {
     switch (category) {
       case 'Electronics': return 'electronics-category';
